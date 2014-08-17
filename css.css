@@ -13,6 +13,21 @@ html,body {
 			background-position: 0 0;
 			-webkit-transform-style: preserve-3d;
 		}
+		#loading {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1000;
+			background-color: white;
+			display: block;
+		}
+		#loading > p {
+			position: absolute;
+			bottom: 0;
+			text-align: center;
+			width: 100%;
+		}
 		.base {
 			position: absolute;
 			width: 100%;
@@ -41,10 +56,10 @@ html,body {
 			height: 100%;
 		}
 		.one {
-			background-image: url(img/moon.png);
+			background-image: url(img/sun.png);
 		}
 		.two {
-			background-image: url(img/sun.png);
+			background-image: url(img/moon.png);
 		}
 		.header {
 			top: 0;
@@ -301,19 +316,14 @@ html,body {
 		#headware1 {
 			background-image: url(img/headware1.png);
 		}
-
-
-		.prevload {
-			background-image: url(img/body/child-body.png);
-			background-image: url(img/body/child-fymen.png);
-			background-image: url(img/child/child-sister.png);
-			background-image: url(img/kuzi1.png);
-			background-image: url(img/cloth1.png);
-			background-image: url(img/headware1.png);
-			background-image: url(img/body/child-body-luo.png);
-			background-image: url(img/cloth/cloth1.png);
-			background-image: url(img/headware/headware1.png);
-			background-image: url(img/kuzi/kuzi1.png);
+		#cloth2 {
+			background-image: url(img/cloth2.png);
+		}
+		#kuzi2 {
+			background-image: url(img/kuzi2.png);
+		}
+		#headware2 {
+			background-image: url(img/headware2.png);
 		}
 		/*
 		*	animate

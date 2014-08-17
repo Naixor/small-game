@@ -139,7 +139,7 @@
 
 					x1 = $touch.clientX;
 					y1 = $touch.clientY;
-				}, true);
+				});
 
 				mainDiv.addEventListener(Move, function (e) {
 					e = window.event || e;
@@ -153,7 +153,7 @@
 
 					$touch["type"] = "TouchMove";
 					TouchHandler["move"] && TouchHandler["move"].call(mainDiv, $touch);
-				}, true);
+				});
 
 				mainDiv.addEventListener(End, function (e) {
 					if(Math.abs(x1-x2) < 50 && Math.abs(y1-y2) < 50) {
@@ -196,7 +196,7 @@
 						$touch["type"] = "TouchTap";
 						TouchHandler["tap"] && TouchHandler["tap"].call(mainDiv, $touch);
 					}
-				}, true);
+				});
 			}
 			return {
 				bindElement: function(ele) {
@@ -272,7 +272,7 @@
 					height: GetCurrentStyle(back, "height"),
 					overflow: "visible",
 					marginLeft: getPx(-nowSwitchIndex*_config.moveDistence),
-					webkitTransition: "all "+_config.moveTime+"s cubic-bezier(.36,.84,.36,.84)"
+					webkitTransition: "all "+_config.moveTime+"s ease-in-out"
 				});
 
 			var _switchIndex = function (index, callback) {
@@ -310,80 +310,3 @@
 			}
 		})(HerizonSwitch);
 	})(window);
-	
-	window.onload = function () {
-		var $EventUtil = EventUtil,
-			_$ = function (id){
-				return document.getElementById(id);
-			};
-		
-		var herizonSwitch = new Switch.Herizon(document.querySelector(".background"), {});
-		var herizonSwitchFooter = new Switch.Herizon(_$("store"), {});
-
-		TouchEvent.bindElement(document.body).touchLeft(function(e){
-			if (e.target.parentNode == document.querySelector(".container")) {
-				herizonSwitch.switchNext();
-			}else if (e.target.parentNode == document.querySelector(".footer")) {
-				herizonSwitchFooter.switchNext();
-			}
-		}).touchRight(function (e){
-			if (e.target.parentNode == document.querySelector(".container")) {
-				herizonSwitch.switchPrev();
-			}else if (e.target.parentNode == document.querySelector(".footer")) {
-				herizonSwitchFooter.switchPrev();
-			}
-		}).touchUp(function(e){
-			if (e.target == _$("infoText")) {
-				$EventUtil.extend(_$("infoText").style, {
-					marginTop: /\d+/.exec(_$("infoText").style.marginTop)-50 +"px"
-				});
-				return;
-			};
-		}).touchDown(function(e){
-			if (e.target == _$("infoText")) {
-
-				$EventUtil.extend(_$("infoText").style, {
-					marginTop: /\d+/.exec(_$("infoText").style.marginTop)+50 +"px"
-				});
-				return;
-			};
-		}).tap(function (e){
-			if (e.target == _$("iknow-btn")) {
-				window.localStorage.setItem("Where-Father-Go", "come");
-				_$("info").style.display = "none";
-
-				$EventUtil.extend(_$("game").style, {
-					display: "block",
-					opacity: "1"
-				});
-			}else if (e.target.parentNode == document.querySelector(".header")){
-				_$("childhead").style.backgroundImage = "url(img/body/"+e.target.id+".png)";
-			}else if (e.target.parentNode.className == "border") {
-				var t = (/\D+/.exec(e.target.id))[0];
-				if (t == "kuzi") {
-					_$("childbody").style.backgroundImage = "url(img/body/child-body-luo.png)";
-				};
-
-				_$(t).style.backgroundImage = "url(img/"+t+"/"+e.target.id+".png)";
-			}
-		});
-
-	    new Orientation(_$("starDiv"), {xk:1,yk:1});
-	    new Orientation(_$("leaf"), {xk:1,yk:1});
-	    new Orientation(_$("suntext"), {xk: -0.3, yk:-1});
-
-	    window.localStorage.removeItem("Where-Father-Go");
-
-		if (window.localStorage.getItem("Where-Father-Go") == undefined) {
-			_$("info").style.display = "block";
-			$EventUtil.addClass(_$("info"), ["bounceIn"]);
-		}
-		else {
-			window.localStorage.setItem("Where-Father-Go", "come");
-			_$("info").style.display = "none";
-			$EventUtil.extend(_$("game").style, {
-				display: "block",
-				opacity: "1"
-			});
-		}
-	}

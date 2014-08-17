@@ -10,25 +10,22 @@
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
 	<title>爸爸去哪儿</title>
-	<link rel="stylesheet" href="css.css">
 </head>
 <body>
-	<div class="prevload" style="width: 0;height: 0;"></div>
+	<div id="loading">
+		<p id="progress"></p>
+	</div>
 	<div id="info" class="base">
 		<div id="infoDiv">
 			<div id="infoText">
-				<h1>小盆友的第一次</h1>
-				<h3>小盆友们一致认为第一次来玩的你一定还不知道如何跟他们打交道</h3>
-				<br>
-				<p style="text-align: center;">向上滑动查看说明 >_< </p>
-				<h1>操作说明:</h1>
+				<h2>操作说明:</h2>
 				<p>================</p>
-				<h2>切换人物</h2>
+				<h3>切换人物</h3>
 				<p>玩家可以通过点击游戏的最上面人物部分切换不同人物</p>
 				<p>ps:现在只有作者最喜欢的两个人啦,你能猜出他们都是谁吗？</p>
-				<h2>切换舞台场景</h2>
+				<h3>切换舞台场景</h3>
 				<p>我是不会告诉你左右滑动屏幕中间的舞台可以切换舞台背景的</p>
-				<h2>换装</h2>
+				<h3>换装</h3>
 				<p>游戏最下面的STORE中是可以给小盆友们挑选服装的</p>
 				<p>左右切换试试别的衣服~</p>
 			</div>
@@ -36,11 +33,11 @@
 		<div id="iknow-btn"></div>
 	</div>
 	<div class="background">
-		<div class="main two">
+		<div class="main one">
 			<div id="leaf"></div>
 			<div id="suntext"></div>
 		</div>
-		<div class="main one">
+		<div class="main two">
 			<div id="starDiv">
 				<div id="star1" class="middleStar"></div>
 				<div id="star2" class="smallStar"></div>
@@ -97,5 +94,126 @@
 		</div>
 	</div>
 	<script src="js/app.js"></script>
+	<script>
+		window._$ = function (id){
+			return document.getElementById(id);
+		};
+		window.querySelector = function (str) {
+			return document.querySelector(str);
+		};
+		function app(){
+			var $EventUtil = EventUtil;					
+			var herizonSwitch = new Switch.Herizon(querySelector(".background"), {});
+			var herizonSwitchFooter = new Switch.Herizon(_$("store"), {});
+
+			TouchEvent.bindElement(document.body).touchLeft(function(e){			
+				if (e.target.parentNode.className == "container") {
+					herizonSwitch.switchNext();
+				}else if (e.target.parentNode.id == "store" || e.target.parentNode.className == "border") {
+					herizonSwitchFooter.switchNext();
+				}
+			}).touchRight(function (e){
+				console.log(e.target);
+				if (e.target.parentNode.id == "container") {
+					herizonSwitch.switchPrev();
+				}else if (e.target.parentNode.id == "store" || e.target.parentNode.className == "border") {
+					herizonSwitchFooter.switchPrev();
+				}
+			}).touchUp(function(e){
+				if (e.target == _$("infoText")) {
+					$EventUtil.extend(_$("infoText").style, {
+						marginTop: /\d+/.exec(_$("infoText").style.marginTop)-50 +"px"
+					});
+					return;
+				};
+			}).touchDown(function(e){
+				if (e.target == _$("infoText")) {
+
+					$EventUtil.extend(_$("infoText").style, {
+						marginTop: /\d+/.exec(_$("infoText").style.marginTop)+50 +"px"
+					});
+					return;
+				};
+			}).tap(function (e){
+				if (e.target == _$("iknow-btn")) {
+					window.localStorage.setItem("Where-Father-Go", "come");
+					_$("info").style.display = "none";
+
+					$EventUtil.extend(_$("game").style, {
+						display: "block",
+						opacity: "1"
+					});
+				}else if (e.target.parentNode == querySelector(".header")){
+					_$("childhead").style.backgroundImage = "url(img/body/"+e.target.id+".png)";
+				}else if (e.target.parentNode.className == "border") {
+					var t = (/\D+/.exec(e.target.id))[0];
+					if (t == "kuzi") {
+						_$("childbody").style.backgroundImage = "url(img/body/child-body-luo.png)";
+					};
+
+					_$(t).style.backgroundImage = "url(img/"+t+"/"+e.target.id+".png)";
+				}
+			});
+
+		    new Orientation(_$("starDiv"), {xk:1,yk:1});
+		    new Orientation(_$("leaf"), {xk:1,yk:1});
+		    new Orientation(_$("suntext"), {xk: -0.3, yk:-1});
+
+		    window.localStorage.removeItem("Where-Father-Go");
+
+			if (window.localStorage.getItem("Where-Father-Go") == undefined) {
+				_$("info").style.display = "block";
+				$EventUtil.addClass(_$("info"), ["bounceIn"]);
+			}else {
+				window.localStorage.setItem("Where-Father-Go", "come");
+				_$("info").style.display = "none";
+				$EventUtil.extend(_$("game").style, {
+					display: "block",
+					opacity: "1"
+				});
+			}
+		};
+
+
+		var images = [
+			"img/sun.png",
+			"img/leaf.png",
+			"img/star.png",
+			"img/suntext.png",
+			"img/moon.png", 
+			"img/body/child-body.png", 
+			"img/body/child-fymen.png", 
+			"img/child/child-sister.png", 
+			"img/kuzi1.png", 
+			"img/cloth1.png", 
+			"img/headware1.png", 
+			"img/body/child-body-luo.png", 
+			"img/cloth/cloth1.png", 
+			"img/headware/headware1.png", 
+			"img/kuzi/kuzi1.png", 
+			"img/cloth2.png", 
+			"img/kuzi2.png", 
+			"img/headware2.png", 
+			"img/border.png"
+		],
+		imgNum = images.length,
+		preloadIndex = 0;
+		preloadImgs = [];
+		for (var i = 0; i < imgNum; i++) {
+			var img = new Image();
+			img.src = images[i];
+			img.onload = function (argument) {
+				preloadIndex++;
+				_$("progress").innerText = (preloadIndex*100/imgNum).toFixed(2) + "%";
+				_$("loading").style.height = (imgNum-preloadIndex)*100/imgNum + "%";
+				if (preloadIndex == imgNum) {
+					_$("loading").style.display = "none";
+					window.onload = app;
+				}
+			}
+			preloadImgs.push(img);
+		};
+	</script>
+	<link rel="stylesheet" href="css.css">
 </body>
 </html>
